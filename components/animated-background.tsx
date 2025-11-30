@@ -24,8 +24,7 @@ export default function AnimatedBackground() {
         viewBox="0 0 200 200"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.8 }}
-        transition={{ duration: 2, delay: 0.5 }}
-      >
+        transition={{ duration: 2, delay: 0.5 }} >
         <motion.path
           d="M10 150 C 40 100, 80 120, 110 80 S 180 40, 190 10"
           fill="none"
@@ -41,8 +40,7 @@ export default function AnimatedBackground() {
         viewBox="0 0 200 200"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.7 }}
-        transition={{ duration: 2.5, delay: 1 }}
-      >
+        transition={{ duration: 2.5, delay: 1 }} >
         <motion.path
           d="M10 20 Q 60 40, 90 20 T 150 30 T 190 80"
           fill="none"

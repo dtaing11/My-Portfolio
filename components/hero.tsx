@@ -55,7 +55,7 @@ export default function Hero() {
 
         <h1 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
           Hi, I&apos;m{" "}
-          <span className="bg-gradient-to-r from-purple-300 via-amber-200 to-purple-200 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-purple-300 via-amber-200 to-purple-200 bg-clip-text text-transparent">
             Dina Taing
           </span>
         </h1>
@@ -129,12 +129,12 @@ export default function Hero() {
       >
         <div className="relative h-52 w-52 md:h-64 md:w-64 animate-float">
           {/* Glow ring */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-purple-500/70 via-indigo-400/70 to-amber-400/70 blur-2xl" />
+          <div className="absolute inset-0 rounded-full bg-linear-to-tr from-purple-500/70 via-indigo-400/70 to-amber-400/70 blur-2xl" />
 
           {/* Photo */}
           <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-background/80 bg-background shadow-2xl shadow-purple-500/40">
             <Image
-              src="/dina_taing.JPG"
+              src="/image_dina.png"
               alt="Portrait of Dina Taing"
               fill
               className="object-cover"
