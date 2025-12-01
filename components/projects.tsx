@@ -28,13 +28,11 @@ type Project = {
   image?: string
   screens?: string[]
   codeSamples?: CodeSample[]
-  repoUrl?: string              // <--- new
-  showCodePreview?: boolean     // <--- new (default true)
+  repoUrl?: string
+  showCodePreview?: boolean
 }
 
-
-
-// ...
+/* ------------------------- Helpers ------------------------- */
 
 function guessLanguage(label: string): string {
   const lower = label.toLowerCase()
@@ -51,6 +49,45 @@ function guessLanguage(label: string): string {
   return "text"
 }
 
+function ExpandableList({
+  title,
+  items,
+  initialCount = 3,
+}: {
+  title: string
+  items: string[]
+  initialCount?: number
+}) {
+  const [expanded, setExpanded] = useState(false)
+
+  const visibleItems = expanded ? items : items.slice(0, initialCount)
+  const isTruncated = items.length > initialCount
+
+  return (
+    <div className="space-y-1">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-amber-300">
+        {title}
+      </h3>
+      <ul className="list-disc space-y-1 pl-5 text-sm text-slate-200">
+        {visibleItems.map((item, i) => (
+          <li key={i}>{item}</li>
+        ))}
+      </ul>
+
+      {isTruncated && (
+        <button
+          type="button"
+          onClick={() => setExpanded((prev) => !prev)}
+          className="mt-1 text-[11px] font-medium text-amber-300 hover:text-amber-200 underline underline-offset-2"
+        >
+          {expanded ? "Show less" : "Show more"}
+        </button>
+      )}
+    </div>
+  )
+}
+
+/* ------------------------ CodePreview ------------------------ */
 function CodePreview({ sample }: { sample: CodeSample }) {
   const [code, setCode] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -87,21 +124,25 @@ function CodePreview({ sample }: { sample: CodeSample }) {
     }
   }, [sample.url])
 
-  let displayCode = code ?? ""
-  let isTruncated = false
-
-  if (code && !expanded) {
-    const lines = code.split("\n")
-    if (lines.length > 80) {
-      displayCode = lines.slice(0, 80).join("\n")
-      isTruncated = true
-    }
-  }
-
   const language = guessLanguage(sample.label)
 
+  // --- truncation logic ---
+  const totalLines = code ? code.split("\n").length : 0
+  const hasMore = totalLines > 80
+
+  let displayCode = code ?? ""
+  if (code && hasMore && !expanded) {
+    displayCode = code.split("\n").slice(0, 80).join("\n")
+  }
+
   return (
-    <div className="flex h-full flex-col gap-2">
+    <motion.div
+      layout
+      initial={false}
+      transition={{ type: "spring", stiffness: 140, damping: 20 }}
+      className="flex flex-col gap-2"
+    >
+      {/* Header */}
       <div className="flex items-center justify-between gap-2">
         <div className="space-y-1">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-amber-300">
@@ -128,9 +169,18 @@ function CodePreview({ sample }: { sample: CodeSample }) {
         )}
       </div>
 
-      <div className="relative flex-1 overflow-auto rounded-md bg-black/90 p-2 text-xs font-mono text-emerald-200">
-        {loading && <p className="px-2 py-1">Loading code...</p>}
-        {error && <p className="px-2 py-1 text-red-300">{error}</p>}
+      {/* Code container — height animates smoothly */}
+      <div
+        className={
+          [
+            "relative overflow-y-auto overflow-x-hidden rounded-md bg-black/90",
+            "transition-[max-height] duration-300 ease-out",
+            expanded ? "max-h-[80vh]" : "max-h-[40vh] md:max-h-[60vh]",
+          ].join(" ")
+        }
+      >
+        {loading && <p className="px-2 py-1 text-xs">Loading code...</p>}
+        {error && <p className="px-2 py-1 text-xs text-red-300">{error}</p>}
         {code && (
           <>
             <SyntaxHighlighter
@@ -139,22 +189,32 @@ function CodePreview({ sample }: { sample: CodeSample }) {
               customStyle={{
                 margin: 0,
                 background: "transparent",
-                fontSize: "0.75rem",
+                fontSize: "0.72rem",   // good on phone
                 padding: "0.75rem",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-all",
+              }}
+              codeTagProps={{
+                style: {
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-all",
+                },
               }}
               wrapLongLines
             >
               {displayCode}
             </SyntaxHighlighter>
 
-            {!expanded && isTruncated && (
+            {/* fade only when collapsed */}
+            {hasMore && !expanded && (
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/95 to-black/0" />
             )}
           </>
         )}
       </div>
 
-      {isTruncated && (
+      {/* View more / Show less */}
+      {hasMore && (
         <div className="flex justify-end">
           <Button
             type="button"
@@ -167,12 +227,14 @@ function CodePreview({ sample }: { sample: CodeSample }) {
           </Button>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }
 
 
-// Example data: some with preview, some repo-only
+
+/* ------------------------ Projects Data ------------------------ */
+
 const projects: Project[] = [
   {
     id: "municipal",
@@ -203,7 +265,7 @@ const projects: Project[] = [
       "/projects/muncipal/4.png",
     ],
     repoUrl: "https://github.com/dtaing11/MuniciPal/tree/master/municipal",
-    showCodePreview: true, // uses code preview
+    showCodePreview: true,
     codeSamples: [
       {
         label: "LandingPage.dart",
@@ -247,169 +309,187 @@ const projects: Project[] = [
       "/projects/pickleball/5.png",
     ],
     repoUrl: "https://github.com/dtaing11/Sport-App",
-    showCodePreview: false, // repo only, NO code panel
+    showCodePreview: false,
   },
-  { id: "GeauxApp", 
+  {
+    id: "GeauxApp",
     title: "GeauxApp – GDG@LSU Project",
-    year: "2025", 
-    summary: "A student-built LSU campus discovery and event-sharing app that helps LSU students explore campus, discover events, follow organizations, and post updates. Designed, led, and coordinated by me with a 20+ developer team. Built with Flutter and Supabase, with a custom GCP VM middleware to optimize performance and reduce storage costs. Targeting a Spring 2025 release.",
-    tech: [ "Flutter", "Provider", "PostgreSQL", "Supabase", "Google Cloud VM", "Node.js Middleware", ],
-    details: [ "Leading and coordinating a 20+ developer team ranging from beginners to advanced engineers, balancing workload, mentoring contributors, and maintaining consistent sprint delivery.", "Developed the full cross-platform mobile experience using Flutter with Provider for predictable and scalable state management.", "Built a custom middleware API running on a GCP virtual machine to centralize logic, handle caching, and reduce direct calls to Supabase.", "Implemented cost-optimized media storage by routing image uploads through the middleware and storing them in GCP buckets instead of Supabase Storage.", "Integrated Supabase Auth for secure login, user profiles, and persistent cross-device sessions.", "Implemented real-time feeds, organization posts, and event updates using Supabase Realtime and custom middleware syncing.", "Designed backend data models to support events, posts, organizations, comments, and user engagement across campus.", ],
-    highlights: [ "Campus Event Feed", "Student Organizations", "Real-Time Updates", "GCP Middleware Optimization", "Cost-Effective Media Storage", ], userExperience: [ "Students instantly see a live campus feed showing upcoming events, organization posts, and trending activities around LSU.", "Users browse events, explore details, RSVP, and see club account activity all in one place.", "Student organizations can post announcements, upload posters, and manage their presence directly through the app.", "A personalized feed recommends events and orgs based on user interests and follows.", "Media uploads are routed through a GCP-powered pipeline for faster upload speeds and reduced hosting cost.", "The app delivers a consistent and smooth iOS/Android experience to help LSU students stay connected anywhere on campus.", ],
-    image: "/projects/geauxapp-cover.png", 
-    screens: [ "/projects/geauxapp/1.png", "/projects/geauxapp/2.png", ], 
+    year: "2025",
+    summary:
+      "A student-built LSU campus discovery and event-sharing app that helps LSU students explore campus, discover events, follow organizations, and post updates. Designed, led, and coordinated by me with a 20+ developer team. Built with Flutter and Supabase, with a custom GCP VM middleware to optimize performance and reduce storage costs. Targeting a Spring 2025 release.",
+    tech: [
+      "Flutter",
+      "Provider",
+      "PostgreSQL",
+      "Supabase",
+      "Google Cloud VM",
+      "Node.js Middleware",
+    ],
+    details: [
+      "Leading and coordinating a 20+ developer team ranging from beginners to advanced engineers, balancing workload, mentoring contributors, and maintaining consistent sprint delivery.",
+      "Developed the full cross-platform mobile experience using Flutter with Provider for predictable and scalable state management.",
+      "Built a custom middleware API running on a GCP virtual machine to centralize logic, handle caching, and reduce direct calls to Supabase.",
+      "Implemented cost-optimized media storage by routing image uploads through the middleware and storing them in GCP buckets instead of Supabase Storage.",
+      "Integrated Supabase Auth for secure login, user profiles, and persistent cross-device sessions.",
+      "Implemented real-time feeds, organization posts, and event updates using Supabase Realtime and custom middleware syncing.",
+      "Designed backend data models to support events, posts, organizations, comments, and user engagement across campus.",
+    ],
+    highlights: [
+      "Campus Event Feed",
+      "Student Organizations",
+      "Real-Time Updates",
+      "GCP Middleware Optimization",
+      "Cost-Effective Media Storage",
+    ],
+    userExperience: [
+      "Students instantly see a live campus feed showing upcoming events, organization posts, and trending activities around LSU.",
+      "Users browse events, explore details, RSVP, and see club account activity all in one place.",
+      "Student organizations can post announcements, upload posters, and manage their presence directly through the app.",
+      "A personalized feed recommends events and orgs based on user interests and follows.",
+      "Media uploads are routed through a GCP-powered pipeline for faster upload speeds and reduced hosting cost.",
+      "The app delivers a consistent and smooth iOS/Android experience to help LSU students stay connected anywhere on campus.",
+    ],
+    image: "/projects/geauxapp-cover.png",
+    screens: ["/projects/geauxapp/1.png", "/projects/geauxapp/2.png"],
     repoUrl: "https://github.com/Google-Developers-Student-Club-LSU/GeauxApp-Frontend",
     showCodePreview: false,
   },
- {
-  id: "nlp-mini-engine",
-  title: "Custom NLP Tokenizer & Language Model",
-  year: "2025",
-  summary:
-    "An end-to-end mini NLP engine that builds a custom Byte Pair Encoding (BPE) tokenizer and an N-Gram language model from scratch. This project focuses on understanding how modern tokenization and classic statistical language modeling work under the hood, without relying on high-level libraries.",
-  tech: ["Python", "BPE", "N-Gram", "NLP"],
-  details: [
-    "Implemented a custom Byte Pair Encoding (BPE) tokenizer, including vocabulary construction, merge operations, and text-to-token pipelines.",
-    "Built an N-Gram language model (uni/bi/tri-gram) using the tokenized corpus, with configurable smoothing and context window sizes.",
-    "Created a training pipeline to learn token merges, estimate N-Gram probabilities, and persist vocab + model artifacts for reuse.",
-    "Exposed simple CLI/Notebook utilities to tokenize text, inspect merges, generate text, and compare different N-Gram orders.",
-  ],
-  highlights: [
-    "End-to-end understanding of how raw text becomes tokens and how tokens drive language prediction.",
-    "No heavy NLP frameworks for core logic – algorithms implemented from first principles.",
-    "Built in a way that can be extended toward modern transformer-based models later.",
-  ],
-  userExperience: [
-    "Developers point the tool at a text corpus to learn a custom BPE vocabulary and N-Gram statistics.",
-    "They can experiment with different vocab sizes or N-Gram orders and immediately see how perplexity and sample generations change.",
-    "The CLI/notebooks make it easy to inspect merges, token distributions, and example generated sequences for educational purposes.",
-  ],
-  repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage",
-  showCodePreview: true,
-  codeSamples: [
-    {
-      label: "bpe_tokenizer.py",
-      url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/BPEModel/Taing_csc4700_cshw2.py",
-      repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/BPEModel/Taing_csc4700_cshw2.py",
-      challenge:
-        "Implementing BPE merges and vocabulary construction from scratch while keeping the implementation easy to visualize and debug.",
-    },
-    {
-      label: "ngram_model.py",
-      url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/NgramModel/Taing_csc4700_cshw1.py",
-      repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/NgramModel/Taing_csc4700_cshw1.py",
-      challenge:
-        "Designing an N-Gram model that supports different orders and smoothing methods while remaining simple enough for teaching.",
-    },
-  ],
-},
-{
-  id: "agentic-controller",
-  title: "Agentic Controller – Tool-Aware LLM Orchestrator",
-  year: "2025",
-  summary:
-    "A minimal but fully featured agentic controller loop that orchestrates an LLM with tools, JSON Schema validation, budgets, and retrieval-augmented generation. It demonstrates planning, argument repair, rolling summarization, and Chroma-based knowledge search on top of the OpenAI API.",
-  tech: [
-    "Python",
-    "OpenAI API",
-    "ChromaDB",
-    "JSON Schema",
-    "dotenv",
-    "Requests"
-  ],
-  details: [
-    "Implemented a controller loop that plans the next action (tool call or final answer) using an LLM, with strict JSON-only interfaces.",
-    "Defined a tool catalog with JSON Schemas and runtime validation to prevent hallucinated tools or arguments.",
-    "Added automatic argument repair via a one-shot LLM call whenever schema validation fails.",
-    "Implemented budget controls for max steps, tokens, and cost, with simple accounting tied to OpenAI usage metadata.",
-    "Tracked recent actions with hashing to detect and break out of ineffective ReAct-style loops.",
-    "Maintained a rolling history summary with an LLM compressor to keep context small while preserving key facts.",
-    "Integrated a weather tool backed by Open-Meteo geocoding and forecast APIs with normalized output.",
-    "Added a Chroma-based knowledge base search tool that uses manual OpenAI embeddings for retrieval-augmented reasoning.",
-    "Implemented a final synthesis step that composes the answer solely from the working summary and tool evidence.",
-    "Provided a `run_agent(goal)` entrypoint to execute the full planning–tool–synthesis pipeline from a single question."
-  ],
-  highlights: [
-    "End-to-end example of a budget-aware agentic loop with real tools and retrieval.",
-    "Strict JSON Schema tool interfaces with automatic LLM-based argument repair.",
-    "Pluggable planner, summarizer, and synthesizer built around OpenAI chat + embeddings APIs.",
-    "ChromaDB integration for local vector search with automatic seeding from SQuAD-style data."
-  ],
-  userExperience: [
-    "Developers call `run_agent(\"<goal>\")` or run the script from the CLI with a natural language question.",
-    "The controller decides whether to call the weather tool, search the knowledge base, or synthesize an answer directly.",
-    "Each tool call produces a concise observation that is summarized into a rolling working memory.",
-    "If the agent gets stuck repeating the same action, loop detection triggers a different plan instead of spinning forever.",
-    "Once enough evidence is gathered, the agent switches to 'answer' mode and generates a final response grounded in the tool outputs."
-  ],
-  repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage",
-  showCodePreview: true, // uses code preview
-  codeSamples: [
-    {
-      label: "agentic_controller.py",
-      url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/Agentic_Model/agentic_controll.py",
-      repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/Agentic_Model/agentic_controll.py",
-      challenge:
-        "Designing a budget-aware agent loop that coordinates planning, JSON Schema validation, argument repair, Chroma RAG, and final synthesis without hallucinated tools or arguments."
-    }
-  ]
-},
-{
-  id: "llm-integration-pipeline",
-  title: "LLM Integration & Evaluation Pipeline",
-  year: "2025",
-  summary:
-    "A practical LLM integration pipeline that wires together OpenAI (GPT-5-nano, GPT-5-mini) and OpenRouter (Qwen 3-8B) for large-scale question answering and automatic grading on SQuAD. The focus is on robust API integration, batch workflows, JSON-schema outputs, and end-to-end automation.",
-  tech: [
-    "Python",
-    "OpenAI API",
-    "OpenRouter",
-    "Batch API",
-    "JSON Schema",
-    "SQuAD"
-  ],
-  details: [
-    "Integrated multiple LLM providers (OpenAI and OpenRouter) in a single Python pipeline with consistent interfaces and error handling.",
-    "Used OpenAI’s Batch API to run GPT-5-nano at scale, building JSONL request payloads and polling job status until completion.",
-    "Implemented a unified parsing layer that normalizes differing response formats (raw text, choices, message content) into a clean predictions file.",
-    "Called Qwen 3-8B via OpenRouter using a shared system prompt, creating a second prediction set over the same 500 SQuAD questions.",
-    "Designed an LLM-as-judge component with GPT-5-mini, enforcing a JSON-schema output that includes a boolean score and short explanation.",
-    "Generated judge batches for both GPT-5-nano and Qwen predictions and routed them through the same OpenAI batch endpoint for scalable scoring.",
-    "Built robust fallbacks to recover judge outputs whether they appear in `parsed`, `output_text`, or nested message content fields.",
-    "Computed model-level accuracy metrics and printed a clear comparison between GPT-5-nano and Qwen 3-8B using the judged scores.",
-    "Wrapped all LLM integrations—answering, judging, and evaluation—into a single reproducible script driven by environment variables and local files."
-  ],
-  highlights: [
-    "Demonstrates real-world multi-LLM integration across two providers with different APIs.",
-    "Uses batch APIs to reduce latency and overhead for hundreds of LLM calls.",
-    "LLM-as-judge design with strict JSON Schema for machine-readable evaluation.",
-    "End-to-end pipeline: data prep → LLM answering → LLM judging → metrics."
-  ],
-  userExperience: [
-    "An engineer runs the script once and it automatically prepares 500 SQuAD questions if needed.",
-    "The pipeline submits a GPT-5-nano batch job, waits for completion, then normalizes outputs into JSONL predictions.",
-    "In a second stage, the script streams each question to Qwen 3-8B via OpenRouter, logging progress every few dozen queries.",
-    "GPT-5-mini is invoked as a judge in batch mode, returning JSON-schema-constrained scores and explanations for each prediction.",
-    "Finally, the script aggregates judged results and prints accuracy for both models, giving a clean, quantitative comparison of LLM performance."
-  ],
-  repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage",
-  showCodePreview: true,
-  codeSamples: [
-    {
-      label: "llm_integration_pipeline.py",
-      url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/OpenAiAPI/Taing_csc4700_cshw2.py",
-      repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/OpenAiAPI/Taing_csc4700_cshw2.py",
-      challenge:
-        "Coordinating multiple LLMs and providers—answering models and a judging model—through batch APIs, JSON Schema outputs, and resilient parsing while keeping the pipeline fully automated and reproducible."
-    }
-  ]
-}
-
-
-
-
+  {
+    id: "nlp-mini-engine",
+    title: "Custom NLP Tokenizer & Language Model",
+    year: "2025",
+    summary:
+      "An end-to-end mini NLP engine that builds a custom Byte Pair Encoding (BPE) tokenizer and an N-Gram language model from scratch. This project focuses on understanding how modern tokenization and classic statistical language modeling work under the hood, without relying on high-level libraries.",
+    tech: ["Python", "BPE", "N-Gram", "NLP"],
+    details: [
+      "Implemented a custom Byte Pair Encoding (BPE) tokenizer, including vocabulary construction, merge operations, and text-to-token pipelines.",
+      "Built an N-Gram language model (uni/bi/tri-gram) using the tokenized corpus, with configurable smoothing and context window sizes.",
+      "Created a training pipeline to learn token merges, estimate N-Gram probabilities, and persist vocab + model artifacts for reuse.",
+      "Exposed simple CLI/Notebook utilities to tokenize text, inspect merges, generate text, and compare different N-Gram orders.",
+    ],
+    highlights: [
+      "End-to-end understanding of how raw text becomes tokens and how tokens drive language prediction.",
+      "No heavy NLP frameworks for core logic – algorithms implemented from first principles.",
+      "Built in a way that can be extended toward modern transformer-based models later.",
+    ],
+    userExperience: [
+      "Developers point the tool at a text corpus to learn a custom BPE vocabulary and N-Gram statistics.",
+      "They can experiment with different vocab sizes or N-Gram orders and immediately see how perplexity and sample generations change.",
+      "The CLI/notebooks make it easy to inspect merges, token distributions, and example generated sequences for educational purposes.",
+    ],
+    repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage",
+    showCodePreview: true,
+    codeSamples: [
+      {
+        label: "bpe_tokenizer.py",
+        url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/BPEModel/Taing_csc4700_cshw2.py",
+        repoUrl:
+          "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/BPEModel/Taing_csc4700_cshw2.py",
+        challenge:
+          "Implementing BPE merges and vocabulary construction from scratch while keeping the implementation easy to visualize and debug.",
+      },
+      {
+        label: "ngram_model.py",
+        url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/NgramModel/Taing_csc4700_cshw1.py",
+        repoUrl:
+          "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/NgramModel/Taing_csc4700_cshw1.py",
+        challenge:
+          "Designing an N-Gram model that supports different orders and smoothing methods while remaining simple enough for teaching.",
+      },
+    ],
+  },
+  {
+    id: "agentic-controller",
+    title: "Agentic Controller – Tool-Aware LLM Orchestrator",
+    year: "2025",
+    summary:
+      "A minimal but fully featured agentic controller loop that orchestrates an LLM with tools, JSON Schema validation, budgets, and retrieval-augmented generation. It demonstrates planning, argument repair, rolling summarization, and Chroma-based knowledge search on top of the OpenAI API.",
+    tech: ["Python", "OpenAI API", "ChromaDB", "JSON Schema", "dotenv", "Requests"],
+    details: [
+      "Implemented a controller loop that plans the next action (tool call or final answer) using an LLM, with strict JSON-only interfaces.",
+      "Defined a tool catalog with JSON Schemas and runtime validation to prevent hallucinated tools or arguments.",
+      "Added automatic argument repair via a one-shot LLM call whenever schema validation fails.",
+      "Implemented budget controls for max steps, tokens, and cost, with simple accounting tied to OpenAI usage metadata.",
+      "Tracked recent actions with hashing to detect and break out of ineffective ReAct-style loops.",
+      "Maintained a rolling history summary with an LLM compressor to keep context small while preserving key facts.",
+      "Integrated a weather tool backed by Open-Meteo geocoding and forecast APIs with normalized output.",
+      "Added a Chroma-based knowledge base search tool that uses manual OpenAI embeddings for retrieval-augmented reasoning.",
+      "Implemented a final synthesis step that composes the answer solely from the working summary and tool evidence.",
+      "Provided a `run_agent(goal)` entrypoint to execute the full planning–tool–synthesis pipeline from a single question.",
+    ],
+    highlights: [
+      "End-to-end example of a budget-aware agentic loop with real tools and retrieval.",
+      "Strict JSON Schema tool interfaces with automatic LLM-based argument repair.",
+      "Pluggable planner, summarizer, and synthesizer built around OpenAI chat + embeddings APIs.",
+      "ChromaDB integration for local vector search with automatic seeding from SQuAD-style data.",
+    ],
+    userExperience: [
+      "Developers call `run_agent(\"<goal>\")` or run the script from the CLI with a natural language question.",
+      "The controller decides whether to call the weather tool, search the knowledge base, or synthesize an answer directly.",
+      "Each tool call produces a concise observation that is summarized into a rolling working memory.",
+      "If the agent gets stuck repeating the same action, loop detection triggers a different plan instead of spinning forever.",
+      "Once enough evidence is gathered, the agent switches to 'answer' mode and generates a final response grounded in the tool outputs.",
+    ],
+    repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage",
+    showCodePreview: true,
+    codeSamples: [
+      {
+        label: "agentic_controller.py",
+        url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/Agentic_Model/agentic_controll.py",
+        repoUrl:
+          "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/Agentic_Model/agentic_controll.py",
+        challenge:
+          "Designing a budget-aware agent loop that coordinates planning, JSON Schema validation, argument repair, Chroma RAG, and final synthesis without hallucinated tools or arguments.",
+      },
+    ],
+  },
+  {
+    id: "llm-integration-pipeline",
+    title: "LLM Integration & Evaluation Pipeline",
+    year: "2025",
+    summary:
+      "A practical LLM integration pipeline that wires together OpenAI (GPT-5-nano, GPT-5-mini) and OpenRouter (Qwen 3-8B) for large-scale question answering and automatic grading on SQuAD. The focus is on robust API integration, batch workflows, JSON-schema outputs, and end-to-end automation.",
+    tech: ["Python", "OpenAI API", "OpenRouter", "Batch API", "JSON Schema", "SQuAD"],
+    details: [
+      "Integrated multiple LLM providers (OpenAI and OpenRouter) in a single Python pipeline with consistent interfaces and error handling.",
+      "Used OpenAI’s Batch API to run GPT-5-nano at scale, building JSONL request payloads and polling job status until completion.",
+      "Implemented a unified parsing layer that normalizes differing response formats (raw text, choices, message content) into a clean predictions file.",
+      "Called Qwen 3-8B via OpenRouter using a shared system prompt, creating a second prediction set over the same 500 SQuAD questions.",
+      "Designed an LLM-as-judge component with GPT-5-mini, enforcing a JSON-schema output that includes a boolean score and short explanation.",
+      "Generated judge batches for both GPT-5-nano and Qwen predictions and routed them through the same OpenAI batch endpoint for scalable scoring.",
+      "Built robust fallbacks to recover judge outputs whether they appear in `parsed`, `output_text`, or nested message content fields.",
+      "Computed model-level accuracy metrics and printed a clear comparison between GPT-5-nano and Qwen 3-8B using the judged scores.",
+      "Wrapped all LLM integrations—answering, judging, and evaluation—into a single reproducible script driven by environment variables and local files.",
+    ],
+    highlights: [
+      "Demonstrates real-world multi-LLM integration across two providers with different APIs.",
+      "Uses batch APIs to reduce latency and overhead for hundreds of LLM calls.",
+      "LLM-as-judge design with strict JSON Schema for machine-readable evaluation.",
+      "End-to-end pipeline: data prep → LLM answering → LLM judging → metrics.",
+    ],
+    userExperience: [
+      "An engineer runs the script once and it automatically prepares 500 SQuAD questions if needed.",
+      "The pipeline submits a GPT-5-nano batch job, waits for completion, then normalizes outputs into JSONL predictions.",
+      "In a second stage, the script streams each question to Qwen 3-8B via OpenRouter, logging progress every few dozen queries.",
+      "GPT-5-mini is invoked as a judge in batch mode, returning JSON-schema-constrained scores and explanations for each prediction.",
+      "Finally, the script aggregates judged results and prints accuracy for both models, giving a clean, quantitative comparison of LLM performance.",
+    ],
+    repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage",
+    showCodePreview: true,
+    codeSamples: [
+      {
+        label: "llm_integration_pipeline.py",
+        url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/OpenAiAPI/Taing_csc4700_cshw2.py",
+        repoUrl:
+          "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/OpenAiAPI/Taing_csc4700_cshw2.py",
+        challenge:
+          "Coordinating multiple LLMs and providers—answering models and a judging model—through batch APIs, JSON Schema outputs, and resilient parsing while keeping the pipeline fully automated and reproducible.",
+      },
+    ],
+  },
 ]
 
+/* ------------------------ Component ------------------------ */
 
 export default function Projects() {
   const [activeProject, setActiveProject] = useState<Project | null>(null)
@@ -546,7 +626,7 @@ export default function Projects() {
                 </div>
               </header>
 
-              {/* Main content: 1 or 2 columns depending on showCodePreview */}
+              {/* Main content */}
               <main
                 className={
                   "grid gap-4 px-4 py-4 md:px-8 md:py-6 lg:py-8 " +
@@ -625,40 +705,25 @@ export default function Projects() {
 
                     {activeProject.highlights &&
                       activeProject.highlights.length > 0 && (
-                        <div className="space-y-1">
-                          <h3 className="text-xs font-semibold uppercase tracking-wide text-amber-300">
-                            Highlights
-                          </h3>
-                          <ul className="list-disc space-y-1 pl-5 text-sm text-slate-200">
-                            {activeProject.highlights.map((h, i) => (
-                              <li key={i}>{h}</li>
-                            ))}
-                          </ul>
-                        </div>
+                        <ExpandableList
+                          title="Highlights"
+                          items={activeProject.highlights}
+                          initialCount={3}
+                        />
                       )}
 
-                    <div className="space-y-1">
-                      <h3 className="text-xs font-semibold uppercase tracking-wide text-amber-300">
-                        What I did
-                      </h3>
-                      <ul className="list-disc space-y-1 pl-5 text-sm text-slate-200">
-                        {activeProject.details.map((d, i) => (
-                          <li key={i}>{d}</li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ExpandableList
+                      title="What I did"
+                      items={activeProject.details}
+                      initialCount={3}
+                    />
 
                     {activeProject.userExperience && (
-                      <div className="space-y-1">
-                        <h3 className="text-xs font-semibold uppercase tracking-wide text-amber-300">
-                          User Experience
-                        </h3>
-                        <ul className="list-disc space-y-1 pl-5 text-sm text-slate-200">
-                          {activeProject.userExperience.map((ux, i) => (
-                            <li key={i}>{ux}</li>
-                          ))}
-                        </ul>
-                      </div>
+                      <ExpandableList
+                        title="User Experience"
+                        items={activeProject.userExperience}
+                        initialCount={3}
+                      />
                     )}
 
                     <div className="mt-2 flex flex-wrap gap-2 text-[11px] md:hidden">
@@ -707,10 +772,12 @@ export default function Projects() {
                         </div>
                       </div>
 
-                      <div className="min-h-[260px] md:min-h-[340px]">
+                      <div className="min-h-[220px] max-h-[55vh] md:min-h-[340px] md:max-h-none">
                         <CodePreview
                           sample={
-                            activeProject.codeSamples[activeSampleIndex] as CodeSample
+                            activeProject.codeSamples[
+                              activeSampleIndex
+                            ] as CodeSample
                           }
                         />
                       </div>
@@ -718,16 +785,6 @@ export default function Projects() {
                   )}
               </main>
 
-              <footer className="flex items-center justify-center border-t border-white/10 bg-slate-950/90 px-4 py-2 md:hidden">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-slate-500 text-slate-100 hover:bg-slate-800"
-                  onClick={() => setActiveProject(null)}
-                >
-                  Close
-                </Button>
-              </footer>
             </div>
           </motion.div>
         )}
