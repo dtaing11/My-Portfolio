@@ -521,7 +521,7 @@ const projects: Project[] = [
   ],
   image: "/projects/strikezone-cover.png",
   screens: ["/projects/softball/1.png","/projects/softball/2.png","/projects/softball/3.png","/projects/softball/4.png"],
-  repoUrl: "https://github.com/dtaing11/StrikeZone-Model",
+  repoUrl: "https://github.com/dtaing11/Math4020-Softball-Trackman-StrikeZone",
   showCodePreview: true,
     codeSamples: [
       {
