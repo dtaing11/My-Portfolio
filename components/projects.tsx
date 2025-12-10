@@ -534,6 +534,63 @@ const projects: Project[] = [
     },
     ],
 },
+{
+  id: "texas-infrastructure",
+  title: "Texas Hold’em Multiplayer Engine & Infrastructure",
+  year: "2025",
+  summary:
+    "A production-grade Texas Hold’em engine built in Go with deterministic game state management, full betting-round logic, and real-time WebSocket synchronization. Includes a bot framework, rate-limited WebSocket server, state reconciliation system, and a host client for automated simulations and debugging.",
+  tech: [
+    "Go",
+    "WebSockets",
+    "Concurrent Systems",
+    "State Machines",
+    "FastAPI (Bots)",
+    "GCP Cloud Run",
+    "Docker"
+  ],
+  details: [
+    "Implemented a fully deterministic Texas Hold’em game engine in Go that manages all betting streets, blinds, pot contributions, side pots, and showdown evaluation.",
+    "Designed a real-time WebSocket server that synchronizes table state to all connected clients, supporting reconnection recovery, state replay, and event-driven updates.",
+    "Added strict turn-validation and action gating logic (`CanPlayerAct`) to prevent illegal actions such as acting out-of-turn, acting while all-in, or invalid raise sizes.",
+    "Built a sliding-window rate limiter to protect Cloud Run endpoints and prevent bot spam or accidental infinite-action loops.",
+    "Developed a host client that monitors all table events, logs engine transitions, and visualizes chip movement across hands using live Python-based plotting.",
+    "Created an extensible bot interface allowing RL agents, scripted bots, or heuristic AIs to connect via WebSocket and perform legal actions in real time.",
+    "Implemented edge-case handling: skipping all-in seats during turn rotation, showdown triggering only when action is complete, and forced actions for blinds."
+  ],
+  highlights: [
+    "Deterministic Betting Engine",
+    "Real-Time WebSocket Sync",
+    "Action Validation (Turn, Chips, Betting Rules)",
+    "Rate-Limited Server Architecture",
+    "RL Bot Integration",
+    "Cloud Run Deployment"
+  ],
+  userExperience: [
+    "Developers can connect players, bots, and observers through a simple WebSocket API that streams continuous table updates.",
+    "State synchronization ensures all clients see identical card distributions, pot sizes, and turn-order information with zero ambiguity.",
+    "Illegal actions are transparently rejected with full engine reasoning, allowing bots to debug their policy decisions.",
+    "Spectators or analytics tools can subscribe to the table and visualize chip flow, win percentage deltas, and betting patterns.",
+    "Poker simulations scale across many Cloud Run instances, enabling massive multi-table experiments for reinforcement-learning bots."
+  ],
+  image: "/projects/texas-cover.png",
+  screens: [
+    "/projects/texas/1.mp4",
+  ],
+  repoUrl: "https://github.com/dtaing11/Texas-HoldEm-Infrastructure",
+  showCodePreview: true,
+  codeSamples: [
+    {
+      label: "engine.go",
+      url: "https://raw.githubusercontent.com/dtaing11/Texas-HoldEm-Infrastructure/refs/heads/main/game/engine.go",
+      repoUrl:
+        "https://github.com/dtaing11/Texas-HoldEm-Infrastructure",
+      challenge:
+        "Building a deterministic, bug-resistant betting engine that handles turn rotation, all-in players, multi-round betting logic, illegal action rejection, and showdown state transitions while supporting both human clients and autonomous agents. Required meticulous state management and deep unit testing to avoid edge-case failures."
+    }
+  ]
+}
+
 ]
 
 /* ------------------------ Component ------------------------ */
