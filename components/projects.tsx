@@ -573,10 +573,6 @@ const projects: Project[] = [
     "Spectators or analytics tools can subscribe to the table and visualize chip flow, win percentage deltas, and betting patterns.",
     "Poker simulations scale across many Cloud Run instances, enabling massive multi-table experiments for reinforcement-learning bots."
   ],
-  image: "/projects/texas-cover.png",
-  screens: [
-    "/projects/texas/1.mp4",
-  ],
   repoUrl: "https://github.com/dtaing11/Texas-HoldEm-Infrastructure",
   showCodePreview: true,
   codeSamples: [
