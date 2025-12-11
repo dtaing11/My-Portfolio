@@ -3,11 +3,11 @@
 import AnimatedBackground from "@/components/animated-background"
 import Experience from "@/components/experience"
 import Hero from "@/components/hero"
-import Projects from "@/components/projects"
 import SiteFooter from "@/components/site-footer"
 import TechStack from "@/components/tech-stack"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+
+// ⬇️ NEW: import the CardSwap-based projects section
+import ProjectsSection from "@/components/project-section"
 
 export default function Home() {
   return (
@@ -30,14 +30,18 @@ export default function Home() {
       <div className="relative mx-auto flex max-w-5xl flex-col gap-12 px-4 py-10 md:py-16">
         {/* HERO */}
         <Hero />
+
         {/* Tech stack */}
-        <TechStack/>
+        <TechStack />
+
         {/* Experience */}
-        <Experience/>
-        {/* Projects */}
-        <Projects />
+        <Experience />
+
+        {/* Projects – swapped to CardSwap version */}
+        <ProjectsSection />
+
         {/* Footer */}
-        <SiteFooter/>
+        <SiteFooter />
       </div>
     </main>
   )
