@@ -1,22 +1,20 @@
-"use client"
+"use client";
 
-import AnimatedBackground from "@/components/animated-background"
-import Experience from "@/components/experience"
-import Hero from "@/components/hero"
-import SiteFooter from "@/components/site-footer"
-import TechStack from "@/components/tech-stack"
-
-// ⬇️ NEW: import the CardSwap-based projects section
-import ProjectsSection from "@/components/project-section"
+import AnimatedBackground from "@/components/animated-background";
+import Experience from "@/components/experience";
+import Hero from "@/components/hero";
+import SiteFooter from "@/components/site-footer";
+import TechStack from "@/components/tech-stack";
+import ProjectsSection from "@/components/project-section";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-transparent text-foreground">
-      {/* Animated LSU glow background */}
-      <AnimatedBackground />
+    // ✅ DO NOT clip the whole page
+    <main className="relative min-h-screen bg-transparent text-foreground overflow-visible">
+      {/* ✅ Background is clipped (safe) */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <AnimatedBackground />
 
-      {/* Background layer (blobs + grid), kept behind content */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
         {/* Purple / gold blobs */}
         <div className="absolute -top-32 -left-24 h-80 w-80 rounded-full bg-purple-600/40 blur-3xl animate-[pulse_12s_ease-in-out_infinite]" />
         <div className="absolute -bottom-40 -right-10 h-80 w-80 rounded-full bg-amber-400/40 blur-3xl animate-[pulse_14s_ease-in-out_infinite]" />
@@ -27,22 +25,16 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <div className="relative mx-auto flex max-w-5xl flex-col gap-12 px-4 py-10 md:py-16">
-        {/* HERO */}
+      <div className="relative mx-auto flex max-w-5xl flex-col px-4 py-10 md:py-16">
+        <div className="space-y-16 md:space-y-20">
         <Hero />
-
-        {/* Tech stack */}
         <TechStack />
-
-        {/* Experience */}
         <Experience />
-
-        {/* Projects – swapped to CardSwap version */}
         <ProjectsSection />
-
-        {/* Footer */}
         <SiteFooter />
       </div>
+    </div>
+
     </main>
-  )
+  );
 }
