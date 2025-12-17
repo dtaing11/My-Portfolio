@@ -8,6 +8,7 @@ import TechStack from "@/components/tech-stack";
 import ProjectsSection from "@/components/project-section";
 import ContactForm from "@/components/contactForm";
 import Projects from "@/components/projects";
+import ContactSection from "@/components/contactSection";
 
 export default function Home() {
   return (
@@ -34,9 +35,7 @@ export default function Home() {
         <Experience />
         {/* <ProjectsSection /> */}
         <Projects></Projects>
-        <section id="contact" className="mx-auto max-w-xl px-4 py-20">
-        <ContactForm />
-        </section>
+        <ContactSection/>
         <SiteFooter />
       </div>
     </div>
