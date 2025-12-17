@@ -7,6 +7,7 @@ import SiteFooter from "@/components/site-footer";
 import TechStack from "@/components/tech-stack";
 import ProjectsSection from "@/components/project-section";
 import ContactForm from "@/components/contactForm";
+import Projects from "@/components/projects";
 
 export default function Home() {
   return (
@@ -31,7 +32,8 @@ export default function Home() {
         <Hero />
         <TechStack />
         <Experience />
-        <ProjectsSection />
+        {/* <ProjectsSection /> */}
+        <Projects></Projects>
         <section id="contact" className="mx-auto max-w-xl px-4 py-20">
         <ContactForm />
         </section>
