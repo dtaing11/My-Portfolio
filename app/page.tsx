@@ -6,6 +6,7 @@ import Hero from "@/components/hero";
 import SiteFooter from "@/components/site-footer";
 import TechStack from "@/components/tech-stack";
 import ProjectsSection from "@/components/project-section";
+import ContactForm from "@/components/contactForm";
 
 export default function Home() {
   return (
@@ -31,6 +32,9 @@ export default function Home() {
         <TechStack />
         <Experience />
         <ProjectsSection />
+        <section id="contact" className="mx-auto max-w-xl px-4 py-20">
+        <ContactForm />
+        </section>
         <SiteFooter />
       </div>
     </div>

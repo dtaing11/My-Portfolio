@@ -18,6 +18,8 @@ export default function ProjectsSection() {
       {/* Heading */}
       <div className="mt-6 mb-6 flex flex-col gap-1">
         <h2 className="text-3xl font-semibold">Projects</h2>
+        <p className="text-sm ">
+        click on the card to see more information</p>
       </div>
 
       <AnimatePresence mode="wait">
