@@ -1,5 +1,9 @@
 // components/experience.tsx
+import { useMemo, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+
+
+const INITIAL_COUNT = 3;
 
 const EXPERIENCE_ITEMS = [
   {
@@ -58,28 +62,38 @@ const EXPERIENCE_ITEMS = [
   },
 ];
 
-
 export default function Experience() {
+  const [expanded, setExpanded] = useState(false);
+
+  const visibleItems = useMemo(() => {
+    return expanded ? EXPERIENCE_ITEMS : EXPERIENCE_ITEMS.slice(0, INITIAL_COUNT);
+  }, [expanded]);
+
+  const hasMore = EXPERIENCE_ITEMS.length > INITIAL_COUNT;
+
   return (
-    <section
-      id="experience"
-      className="space-y-4"
-      aria-labelledby="experience-heading"
-    >
-      <h2
-        id="experience-heading"
-        className="text-2xl font-semibold text-white"
-      >
-        Experience
-      </h2>
+    <section id="experience" className="space-y-4" aria-labelledby="experience-heading">
+      <div className="flex items-end justify-between gap-3">
+        <h2 id="experience-heading" className="text-2xl font-semibold text-white">
+          Experience
+        </h2>
+
+        {hasMore && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[12px] text-slate-200 transition hover:bg-purple-500/30 hover:text-white"
+          >
+            {expanded ? "Show less" : `See more (${EXPERIENCE_ITEMS.length - INITIAL_COUNT})`}
+          </button>
+        )}
+      </div>
 
       <div className="space-y-4">
-        {EXPERIENCE_ITEMS.map((item, index) => (
-          <Card key={index} className={item.className}>
+        {visibleItems.map((item, index) => (
+          <Card key={`${item.title}-${index}`} className={item.className}>
             <CardHeader>
-              <CardTitle className="text-base text-slate-50">
-                {item.title}
-              </CardTitle>
+              <CardTitle className="text-base text-slate-50">{item.title}</CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-2 text-sm text-slate-200">
@@ -92,6 +106,19 @@ export default function Experience() {
           </Card>
         ))}
       </div>
+
+      {/* Optional: bottom button too (nice on mobile) */}
+      {hasMore && (
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="w-full rounded-xl border border-white/15 bg-slate-900/40 px-4 py-2 text-sm text-slate-100 transition hover:bg-purple-500/30"
+          >
+            {expanded ? "Show less" : "See more experience"}
+          </button>
+        </div>
+      )}
     </section>
-  )
+  );
 }

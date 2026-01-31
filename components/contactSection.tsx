@@ -6,14 +6,8 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative z-10 mx-auto w-full max-w-6xl px-4 py-20 md:py-28"
+      className="relative z-10 mx-auto w-full max-w-6xl px-4 "
     >
-      {/* Section ambient background */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-purple-600/25 blur-3xl" />
-        <div className="absolute -bottom-28 right-10 h-80 w-80 rounded-full bg-amber-400/15 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_55%)]" />
-      </div>
 
       {/* Optional section frame */}
       <div className="rounded-3xl border border-white/10 bg-slate-950/20 p-6 backdrop-blur-md shadow-[0_0_0_1px_rgba(255,255,255,0.04)] md:p-10">

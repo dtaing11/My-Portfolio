@@ -25,6 +25,46 @@ type Project = {
 
 export const projects: Project[] = [
   {
+  id: "smart-recipe-backend",
+  title: "Smart Recipe Finder – Java Spring Boot Backend",
+  year: "2023",
+  summary:
+    "A Java Spring Boot backend application that helps users find the best matching recipes based on ingredients available in their fridge. The system uses a custom fuzzy-matching algorithm to handle partial, misspelled, or incomplete ingredient lists and integrates JWT-based authentication for secure user access.",
+  tech: [
+    "Java",
+    "Spring Boot",
+    "Spring Security",
+    "JWT",
+    "REST APIs",
+    "MongoDB",
+    "Fuzzy Matching",
+    "Spring Data MongoDB"
+  ],
+  details: [
+    "Designed and implemented RESTful APIs for managing users, fridge inventories, and recipe search.",
+    "Built a custom fuzzy ingredient-matching algorithm to compare fridge contents against recipe ingredient lists.",
+    "Handled partial matches, synonyms, and inconsistent ingredient naming to rank recipes by relevance.",
+    "Integrated external recipe data sources and normalized ingredient data for accurate comparison.",
+    "Implemented JWT-based authentication and authorization using Spring Security.",
+    "Secured API endpoints with stateless authentication and role-based access control.",
+    "Modeled flexible document schemas in MongoDB for users, ingredients, and saved recipes.",
+    "Added validation, error handling, and standardized API responses."
+  ],
+  highlights: [
+    "Custom fuzzy finder for ingredient-to-recipe matching without relying on exact string comparisons.",
+    "JWT-secured Spring Boot backend with MongoDB document-based persistence.",
+    "Optimized for flexible ingredient data and evolving recipe schemas.",
+    "Clear separation of concerns using controller, service, and repository layers."
+  ],
+  userExperience: [
+    "Users register and authenticate to receive a JWT for secure API access.",
+    "Users add and update ingredients currently available in their fridge.",
+    "The backend ranks recipes based on ingredient similarity and availability.",
+    "Recipes requiring fewer missing ingredients are prioritized in results.",
+    "Users can save favorite recipes for future reference."
+  ],
+},
+  {
     id: "municipal",
     title: "Municipal – Hazard Reporting App",
     year: "2024",
@@ -64,41 +104,41 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    id: "SportApp",
-    title: "PickleKing – Pickleball Ranking App",
-    year: "2024",
-    summary:
-      "A cross-platform Pickleball tracking app built with Flutter and Supabase. This app helps players play with friends, create groups, track match results, and rank themselves to see who is the best.",
-    tech: ["Flutter", "Provider", "PostgreSQL", "Supabase"],
-    details: [
-      "Designed and built the end-to-end mobile app using Flutter with Provider for clean state management.",
-      "Implemented player profiles, match recording, and dynamic ELO/Glicko updates backed by Supabase Postgres.",
-      "Integrated Supabase Auth for secure user authentication and session management across devices.",
-      "Built real-time leaderboards and match updates using Supabase Realtime for instant syncing.",
-      "Used Supabase Storage to handle profile avatars and uploaded images.",
-    ],
-    highlights: ["ELO Ranking System", "Live Score Update", "Groups & Club"],
-    userExperience: [
-      "Players open the app and instantly see their current rating, recent matches, and active groups.",
-      "To start a game, users create or join a match lobby with friends and record scores as soon as the match ends.",
-      "Rankings update immediately after each game, allowing players to see real-time changes powered by ELO/Glicko.",
-      "Users explore leaderboards to compare rankings across friends, local clubs, or custom groups they join.",
-      "Each player can review detailed match history, including opponents, scorelines, and rating changes.",
-      "Groups provide a community space where players can track shared leaderboards and compete within their club.",
-      "The experience is seamless across iOS and Android, giving players consistent access to stats anytime, anywhere.",
-    ],
-    image: "/projects/municipal-cover.png",
-    screens: [
-      "/projects/pickleball/1.png",
-      "/projects/pickleball/2.png",
-      "/projects/pickleball/3.png",
-      "/projects/pickleball/4.png",
-      "/projects/pickleball/5.png",
-    ],
-    repoUrl: "https://github.com/dtaing11/Sport-App",
-    showCodePreview: false,
-  },
+  // {
+  //   id: "SportApp",
+  //   title: "PickleKing – Pickleball Ranking App",
+  //   year: "2024",
+  //   summary:
+  //     "A cross-platform Pickleball tracking app built with Flutter and Supabase. This app helps players play with friends, create groups, track match results, and rank themselves to see who is the best.",
+  //   tech: ["Flutter", "Provider", "PostgreSQL", "Supabase"],
+  //   details: [
+  //     "Designed and built the end-to-end mobile app using Flutter with Provider for clean state management.",
+  //     "Implemented player profiles, match recording, and dynamic ELO/Glicko updates backed by Supabase Postgres.",
+  //     "Integrated Supabase Auth for secure user authentication and session management across devices.",
+  //     "Built real-time leaderboards and match updates using Supabase Realtime for instant syncing.",
+  //     "Used Supabase Storage to handle profile avatars and uploaded images.",
+  //   ],
+  //   highlights: ["ELO Ranking System", "Live Score Update", "Groups & Club"],
+  //   userExperience: [
+  //     "Players open the app and instantly see their current rating, recent matches, and active groups.",
+  //     "To start a game, users create or join a match lobby with friends and record scores as soon as the match ends.",
+  //     "Rankings update immediately after each game, allowing players to see real-time changes powered by ELO/Glicko.",
+  //     "Users explore leaderboards to compare rankings across friends, local clubs, or custom groups they join.",
+  //     "Each player can review detailed match history, including opponents, scorelines, and rating changes.",
+  //     "Groups provide a community space where players can track shared leaderboards and compete within their club.",
+  //     "The experience is seamless across iOS and Android, giving players consistent access to stats anytime, anywhere.",
+  //   ],
+  //   image: "/projects/municipal-cover.png",
+  //   screens: [
+  //     "/projects/pickleball/1.png",
+  //     "/projects/pickleball/2.png",
+  //     "/projects/pickleball/3.png",
+  //     "/projects/pickleball/4.png",
+  //     "/projects/pickleball/5.png",
+  //   ],
+  //   repoUrl: "https://github.com/dtaing11/Sport-App",
+  //   showCodePreview: false,
+  // },
   {
     id: "GeauxApp",
     title: "GeauxApp – GDG@LSU Project",
@@ -142,50 +182,7 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/Google-Developers-Student-Club-LSU/GeauxApp-Frontend",
     showCodePreview: false,
   },
-  {
-    id: "nlp-mini-engine",
-    title: "Custom NLP Tokenizer & Language Model",
-    year: "2025",
-    summary:
-      "An end-to-end mini NLP engine that builds a custom Byte Pair Encoding (BPE) tokenizer and an N-Gram language model from scratch. This project focuses on understanding how modern tokenization and classic statistical language modeling work under the hood, without relying on high-level libraries.",
-    tech: ["Python", "BPE", "N-Gram", "NLP"],
-    details: [
-      "Implemented a custom Byte Pair Encoding (BPE) tokenizer, including vocabulary construction, merge operations, and text-to-token pipelines.",
-      "Built an N-Gram language model (uni/bi/tri-gram) using the tokenized corpus, with configurable smoothing and context window sizes.",
-      "Created a training pipeline to learn token merges, estimate N-Gram probabilities, and persist vocab + model artifacts for reuse.",
-      "Exposed simple CLI/Notebook utilities to tokenize text, inspect merges, generate text, and compare different N-Gram orders.",
-    ],
-    highlights: [
-      "End-to-end understanding of how raw text becomes tokens and how tokens drive language prediction.",
-      "No heavy NLP frameworks for core logic – algorithms implemented from first principles.",
-      "Built in a way that can be extended toward modern transformer-based models later.",
-    ],
-    userExperience: [
-      "Developers point the tool at a text corpus to learn a custom BPE vocabulary and N-Gram statistics.",
-      "They can experiment with different vocab sizes or N-Gram orders and immediately see how perplexity and sample generations change.",
-      "The CLI/notebooks make it easy to inspect merges, token distributions, and example generated sequences for educational purposes.",
-    ],
-    repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage",
-    showCodePreview: true,
-    codeSamples: [
-      {
-        label: "bpe_tokenizer.py",
-        url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/BPEModel/Taing_csc4700_cshw2.py",
-        repoUrl:
-          "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/BPEModel/Taing_csc4700_cshw2.py",
-        challenge:
-          "Implementing BPE merges and vocabulary construction from scratch while keeping the implementation easy to visualize and debug.",
-      },
-      {
-        label: "ngram_model.py",
-        url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/NgramModel/Taing_csc4700_cshw1.py",
-        repoUrl:
-          "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/NgramModel/Taing_csc4700_cshw1.py",
-        challenge:
-          "Designing an N-Gram model that supports different orders and smoothing methods while remaining simple enough for teaching.",
-      },
-    ],
-  },
+  
   {
     id: "agentic-controller",
     title: "Agentic Controller – Tool-Aware LLM Orchestrator",
@@ -231,50 +228,7 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    id: "llm-integration-pipeline",
-    title: "LLM Integration & Evaluation Pipeline",
-    year: "2025",
-    summary:
-      "A practical LLM integration pipeline that wires together OpenAI (GPT-5-nano, GPT-5-mini) and OpenRouter (Qwen 3-8B) for large-scale question answering and automatic grading on SQuAD. The focus is on robust API integration, batch workflows, JSON-schema outputs, and end-to-end automation.",
-    tech: ["Python", "OpenAI API", "OpenRouter", "Batch API", "JSON Schema", "SQuAD"],
-    details: [
-      "Integrated multiple LLM providers (OpenAI and OpenRouter) in a single Python pipeline with consistent interfaces and error handling.",
-      "Used OpenAI’s Batch API to run GPT-5-nano at scale, building JSONL request payloads and polling job status until completion.",
-      "Implemented a unified parsing layer that normalizes differing response formats (raw text, choices, message content) into a clean predictions file.",
-      "Called Qwen 3-8B via OpenRouter using a shared system prompt, creating a second prediction set over the same 500 SQuAD questions.",
-      "Designed an LLM-as-judge component with GPT-5-mini, enforcing a JSON-schema output that includes a boolean score and short explanation.",
-      "Generated judge batches for both GPT-5-nano and Qwen predictions and routed them through the same OpenAI batch endpoint for scalable scoring.",
-      "Built robust fallbacks to recover judge outputs whether they appear in `parsed`, `output_text`, or nested message content fields.",
-      "Computed model-level accuracy metrics and printed a clear comparison between GPT-5-nano and Qwen 3-8B using the judged scores.",
-      "Wrapped all LLM integrations—answering, judging, and evaluation—into a single reproducible script driven by environment variables and local files.",
-    ],
-    highlights: [
-      "Demonstrates real-world multi-LLM integration across two providers with different APIs.",
-      "Uses batch APIs to reduce latency and overhead for hundreds of LLM calls.",
-      "LLM-as-judge design with strict JSON Schema for machine-readable evaluation.",
-      "End-to-end pipeline: data prep → LLM answering → LLM judging → metrics.",
-    ],
-    userExperience: [
-      "An engineer runs the script once and it automatically prepares 500 SQuAD questions if needed.",
-      "The pipeline submits a GPT-5-nano batch job, waits for completion, then normalizes outputs into JSONL predictions.",
-      "In a second stage, the script streams each question to Qwen 3-8B via OpenRouter, logging progress every few dozen queries.",
-      "GPT-5-mini is invoked as a judge in batch mode, returning JSON-schema-constrained scores and explanations for each prediction.",
-      "Finally, the script aggregates judged results and prints accuracy for both models, giving a clean, quantitative comparison of LLM performance.",
-    ],
-    repoUrl: "https://github.com/dtaing11/OpenAi-Chatgpt-Usage",
-    showCodePreview: true,
-    codeSamples: [
-      {
-        label: "llm_integration_pipeline.py",
-        url: "https://raw.githubusercontent.com/dtaing11/OpenAi-Chatgpt-Usage/refs/heads/main/OpenAiAPI/Taing_csc4700_cshw2.py",
-        repoUrl:
-          "https://github.com/dtaing11/OpenAi-Chatgpt-Usage/blob/main/OpenAiAPI/Taing_csc4700_cshw2.py",
-        challenge:
-          "Coordinating multiple LLMs and providers—answering models and a judging model—through batch APIs, JSON Schema outputs, and resilient parsing while keeping the pipeline fully automated and reproducible.",
-      },
-    ],
-  },
+ 
   {
   id: "strikezone-ml",
   title: "LSU Softball Strike Zone Prediction Model",

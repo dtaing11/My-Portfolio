@@ -30,13 +30,6 @@ export default function Home() {
       <div className="relative mx-auto flex max-w-5xl flex-col px-4 py-10 md:py-16">
         
         <div className="space-y-16 md:space-y-10">
-        <Hero />
-        <Accomplishment/>
-
-        <TechStack />
-        <Experience />
-        {/* <ProjectsSection /> */}
-        <Projects></Projects>
         <ContactSection/>
         <SiteFooter />
       </div>
