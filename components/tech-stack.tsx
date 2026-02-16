@@ -35,7 +35,9 @@ export default function TechStack() {
         <h2 id="tech-stack-heading" className="text-2xl font-semibold text-white"> Tech Stack </h2>
       <div className="flex flex-wrap gap-2">
         {stackItems.map((item) => (
-          <Badge key={item} variant="secondary">
+          <Badge 
+          className="bg-purple-500/20 text-white border  border-purple-400/40"
+          key={item} variant="secondary">
             {item}
           </Badge>
         ))}
