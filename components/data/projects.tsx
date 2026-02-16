@@ -1,3 +1,4 @@
+import { Lang } from "../LanguageBar"
 
 
 type CodeSample = {
@@ -21,6 +22,7 @@ type Project = {
   codeSamples?: CodeSample[]
   repoUrl?: string
   showCodePreview?: boolean
+  langs?: Lang[] // ✅ add this
 }
 
 export const projects: Project[] = [
@@ -63,6 +65,16 @@ export const projects: Project[] = [
     "Recipes requiring fewer missing ingredients are prioritized in results.",
     "Users can save favorite recipes for future reference."
   ],
+    langs: [
+      { name: "Dart", pct: 72.8, className: "bg-sky-400" },
+      { name: "Java", pct: 22.0, className: "bg-orange-500" },
+      { name: "JavaScript", pct: 2.5, className: "bg-yellow-400" },
+      { name: "Objective-C", pct: 0.8, className: "bg-blue-400" },
+      { name: "HTML", pct: 0.7, className: "bg-rose-400" },
+      { name: "Ruby", pct: 0.4, className: "bg-red-400" },
+      { name: "Other", pct: 0.8, className: "bg-slate-400" },
+    ],
+
 },
   {
     id: "municipal",
@@ -103,85 +115,67 @@ export const projects: Project[] = [
           "Designing a custom map marker while ensuring accurate placement and preventing visual clutter when multiple reports appear.",
       },
     ],
+  langs: [
+    { name: "Dart", pct: 69.7, className: "bg-sky-400" },
+    { name: "JavaScript", pct: 15.2, className: "bg-yellow-400" },
+    { name: "C++", pct: 5.3, className: "bg-blue-500" },
+    { name: "CMake", pct: 4.1, className: "bg-indigo-400" },
+    { name: "CSS", pct: 3.2, className: "bg-blue-400" },
+    { name: "Swift", pct: 0.6, className: "bg-orange-400" },
+    { name: "Other", pct: 1.9, className: "bg-slate-400" },
+  ],
+
+
   },
-  // {
-  //   id: "SportApp",
-  //   title: "PickleKing – Pickleball Ranking App",
-  //   year: "2024",
-  //   summary:
-  //     "A cross-platform Pickleball tracking app built with Flutter and Supabase. This app helps players play with friends, create groups, track match results, and rank themselves to see who is the best.",
-  //   tech: ["Flutter", "Provider", "PostgreSQL", "Supabase"],
-  //   details: [
-  //     "Designed and built the end-to-end mobile app using Flutter with Provider for clean state management.",
-  //     "Implemented player profiles, match recording, and dynamic ELO/Glicko updates backed by Supabase Postgres.",
-  //     "Integrated Supabase Auth for secure user authentication and session management across devices.",
-  //     "Built real-time leaderboards and match updates using Supabase Realtime for instant syncing.",
-  //     "Used Supabase Storage to handle profile avatars and uploaded images.",
-  //   ],
-  //   highlights: ["ELO Ranking System", "Live Score Update", "Groups & Club"],
-  //   userExperience: [
-  //     "Players open the app and instantly see their current rating, recent matches, and active groups.",
-  //     "To start a game, users create or join a match lobby with friends and record scores as soon as the match ends.",
-  //     "Rankings update immediately after each game, allowing players to see real-time changes powered by ELO/Glicko.",
-  //     "Users explore leaderboards to compare rankings across friends, local clubs, or custom groups they join.",
-  //     "Each player can review detailed match history, including opponents, scorelines, and rating changes.",
-  //     "Groups provide a community space where players can track shared leaderboards and compete within their club.",
-  //     "The experience is seamless across iOS and Android, giving players consistent access to stats anytime, anywhere.",
-  //   ],
-  //   image: "/projects/municipal-cover.png",
-  //   screens: [
-  //     "/projects/pickleball/1.png",
-  //     "/projects/pickleball/2.png",
-  //     "/projects/pickleball/3.png",
-  //     "/projects/pickleball/4.png",
-  //     "/projects/pickleball/5.png",
-  //   ],
-  //   repoUrl: "https://github.com/dtaing11/Sport-App",
-  //   showCodePreview: false,
-  // },
   {
-    id: "GeauxApp",
-    title: "GeauxApp – GDG@LSU Project",
-    year: "2025",
-    summary:
-      "A student-built LSU campus discovery and event-sharing app that helps LSU students explore campus, discover events, follow organizations, and post updates. Designed, led, and coordinated by me with a 20+ developer team. Built with Flutter and Supabase, with a custom GCP VM middleware to optimize performance and reduce storage costs. Targeting a Spring 2025 release.",
-    tech: [
-      "Flutter",
-      "Provider",
-      "PostgreSQL",
-      "Supabase",
-      "Google Cloud VM",
-      "Node.js Middleware",
-    ],
-    details: [
-      "Leading and coordinating a 20+ developer team ranging from beginners to advanced engineers, balancing workload, mentoring contributors, and maintaining consistent sprint delivery.",
-      "Developed the full cross-platform mobile experience using Flutter with Provider for predictable and scalable state management.",
-      "Built a custom middleware API running on a GCP virtual machine to centralize logic, handle caching, and reduce direct calls to Supabase.",
-      "Implemented cost-optimized media storage by routing image uploads through the middleware and storing them in GCP buckets instead of Supabase Storage.",
-      "Integrated Supabase Auth for secure login, user profiles, and persistent cross-device sessions.",
-      "Implemented real-time feeds, organization posts, and event updates using Supabase Realtime and custom middleware syncing.",
-      "Designed backend data models to support events, posts, organizations, comments, and user engagement across campus.",
-    ],
-    highlights: [
-      "Campus Event Feed",
-      "Student Organizations",
-      "Real-Time Updates",
-      "GCP Middleware Optimization",
-      "Cost-Effective Media Storage",
-    ],
-    userExperience: [
-      "Students instantly see a live campus feed showing upcoming events, organization posts, and trending activities around LSU.",
-      "Users browse events, explore details, RSVP, and see club account activity all in one place.",
-      "Student organizations can post announcements, upload posters, and manage their presence directly through the app.",
-      "A personalized feed recommends events and orgs based on user interests and follows.",
-      "Media uploads are routed through a GCP-powered pipeline for faster upload speeds and reduced hosting cost.",
-      "The app delivers a consistent and smooth iOS/Android experience to help LSU students stay connected anywhere on campus.",
-    ],
-    image: "/projects/geauxapp-cover.png",
-    screens: ["/projects/geauxapp/1.png", "/projects/geauxapp/2.png"],
-    repoUrl: "https://github.com/Google-Developers-Student-Club-LSU/GeauxApp-Frontend",
-    showCodePreview: false,
-  },
+  id: "eyetracker-ai4selab",
+  title: "Eyetracker-AI4SELAB – AI4SE Eye Tracking Plugin",
+  year: "2025",
+  summary:
+    "A JetBrains IDE plugin that integrates real-time eye-tracking analytics into the development environment to support research in AI for Software Engineering (AI4SE Lab). The plugin launches and manages a Dockerized Python backend for gaze tracking, streams gaze coordinates into IntelliJ-based IDEs, and enables visualization and logging of developer attention during coding sessions—reducing experimental setup friction and project failure rates by over 80%.",
+  tech: [
+    "Java",
+    "JetBrains Platform SDK",
+    "Python",
+    "Docker",
+    "IntelliJ Plugin Development",
+    "Eye Tracking",
+    "Research Tooling",
+  ],
+  details: [
+    "Designed and implemented a JetBrains IDE plugin using Java and the IntelliJ Platform SDK.",
+    "Integrated real-time eye-tracking data streams from a Dockerized Python backend into the IDE.",
+    "Built automatic Docker image build and container lifecycle management directly from the plugin.",
+    "Implemented background task handling to ensure gaze tracking runs without blocking the IDE UI.",
+    "Streamed gaze coordinates as structured JSON from Python to the plugin for logging and visualization.",
+    "Enabled configurable tracking actions such as start, stop, pause, resume, and labeling events.",
+    "Focused on minimizing setup complexity for researchers to dramatically reduce experiment failure rates.",
+  ],
+  highlights: [
+    "One-Click Start/Stop Eye Tracking from IDE",
+    "Dockerized Python Backend with Zero Manual Setup",
+    "Live Gaze Data Streaming into IntelliJ",
+    "Automatic Container Build & Launch",
+    "Lightweight Non-Blocking Background Tasks",
+    "Reduced Research Project Failure by ~80%",
+  ],
+  userExperience: [
+    "Researchers start eye tracking directly from the IDE Tools menu with a single click.",
+    "The plugin automatically builds and launches the required Docker container if it is not present.",
+    "Gaze coordinates are streamed live into the IDE for logging, visualization, or downstream analysis.",
+    "Developers can pause, resume, or label attention events during coding sessions.",
+    "All tracking runs in the background without interrupting normal IDE usage.",
+  ],
+  repoUrl: "https://github.com/dtaing11/Eyetracker-AI4SELAB",
+  showCodePreview: false,
+
+  // ✅ GitHub-style language breakdown
+  langs: [
+    { name: "Java", pct: 96.3, className: "bg-orange-500" },
+    { name: "Python", pct: 2.9, className: "bg-yellow-400" },
+    { name: "Dockerfile", pct: 0.8, className: "bg-sky-400" },
+  ],
+},
   
   {
     id: "agentic-controller",
@@ -227,6 +221,10 @@ export const projects: Project[] = [
           "Designing a budget-aware agent loop that coordinates planning, JSON Schema validation, argument repair, Chroma RAG, and final synthesis without hallucinated tools or arguments.",
       },
     ],
+    langs: [
+  { name: "Python", pct: 100.0, className: "bg-yellow-400" },
+],
+
   },
  
   {
@@ -278,6 +276,15 @@ export const projects: Project[] = [
   "Expanding a trained 3-input model into a 5-input architecture without losing learned behavior. Required carefully rewriting the first-layer weight matrix, aligning state_dict keys across different model wrappers, and ensuring the upgraded network stayed numerically stable during fine-tuning on the new dataset.",
     },
     ],
+  langs: [
+  { name: "Python", pct: 98.4, className: "bg-yellow-400" },
+  { name: "C", pct: 1.0, className: "bg-blue-600" },
+  { name: "Cython", pct: 0.3, className: "bg-green-500" },
+  { name: "C++", pct: 0.2, className: "bg-blue-500" },
+  { name: "Fortran", pct: 0.1, className: "bg-purple-500" },
+  { name: "PowerShell", pct: 0.0, className: "bg-indigo-400" },
+],
+
 },
 {
   id: "texas-infrastructure",
@@ -329,7 +336,13 @@ export const projects: Project[] = [
       challenge:
         "Building a deterministic, bug-resistant betting engine that handles turn rotation, all-in players, multi-round betting logic, illegal action rejection, and showdown state transitions while supporting both human clients and autonomous agents. Required meticulous state management and deep unit testing to avoid edge-case failures."
     }
-  ]
+  ],
+  langs: [
+  { name: "Go", pct: 81.5, className: "bg-cyan-400" },
+  { name: "Python", pct: 16.8, className: "bg-yellow-400" },
+  { name: "Dockerfile", pct: 1.7, className: "bg-sky-400" },
+],
+
 }
 
 ]

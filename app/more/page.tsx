@@ -1,13 +1,59 @@
 import AnimatedBackground from "@/components/animated-background";
 import SiteFooter from "@/components/site-footer";
+import LanguageBar, { Lang } from "@/components/LanguageBar";
 
 export default function MoreStuffPage() {
-  const items = [
-    { title: "Go TCP Sliding Window Simulator", note: "Selective Repeat + loss simulation" },
-    { title: "Custom SMTP Server on Cloud Run", note: "Go backend + API key auth" },
-    { title: "Mini Vim-like Text Editor in Go", note: "No GUI textbox; manual rendering" },
-    { title: "LEGO Mosaic Generator (PyTorch)", note: "Piece estimation + palette mapping" },
-  ];
+
+type Item = {
+  title: string;
+  note: string;
+  link: string;
+  langs: Lang[];
+};
+
+const items: Item[] = [
+  {
+    title: "Go TCP Sliding Window Simulator",
+    note: "Selective Repeat + loss simulation",
+    link: "https://github.com/yourname/go-tcp-sliding-window",
+    langs: [
+      { name: "Go", pct: 92, className: "bg-cyan-400" },
+      { name: "Shell", pct: 6, className: "bg-emerald-400" },
+      { name: "Other", pct: 2, className: "bg-slate-400" },
+    ],
+  },
+  {
+    title: "Custom SMTP Server on Cloud Run",
+    note: "Go backend + API key auth",
+    link: "https://github.com/yourname/smtp-cloud-run",
+    langs: [
+      { name: "Go", pct: 88, className: "bg-cyan-400" },
+      { name: "Dockerfile", pct: 10, className: "bg-sky-400" },
+      { name: "Other", pct: 2, className: "bg-slate-400" },
+    ],
+  },
+  {
+    title: "Mini Vim-like Text Editor in Go",
+    note: "No GUI textbox; manual rendering",
+    link: "https://github.com/yourname/go-vim-editor",
+    langs: [
+      { name: "Go", pct: 96, className: "bg-cyan-400" },
+      { name: "Other", pct: 4, className: "bg-slate-400" },
+    ],
+  },
+  {
+    title: "LEGO Mosaic Generator (PyTorch)",
+    note: "Piece estimation + palette mapping",
+    link: "https://github.com/yourname/lego-mosaic",
+    langs: [
+      { name: "Python", pct: 90, className: "bg-yellow-400" },
+      { name: "Jupyter", pct: 8, className: "bg-orange-400" },
+      { name: "Other", pct: 2, className: "bg-slate-400" },
+    ],
+  },
+];
+
+
 
   return (
         // ✅ DO NOT clip the whole page
@@ -33,42 +79,32 @@ export default function MoreStuffPage() {
       </p>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
-        {items.map((x) => (
-          <div
-            key={x.title}
-            className="rounded-2xl border border-white/10 bg-slate-900/50 p-5 backdrop-blur-md"
-          >
-            <h2 className="text-white font-semibold">{x.title}</h2>
-            <p className="mt-2 text-sm text-slate-300">{x.note}</p>
-            <p className="mt-4 text-xs text-amber-200">Click to see details →</p>
-          </div>
-        ))}
-    //   </div>
-            
+  {items.map((x) => (
+    <a
+      key={x.title}
+      href={x.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group rounded-2xl border border-white/10 bg-slate-900/50 p-5 backdrop-blur-md transition hover:border-amber-400/40 hover:bg-slate-900/70"
+    >
+      <h2 className="text-white font-semibold">{x.title}</h2>
+      <p className="mt-2 text-sm text-slate-300">{x.note}</p>
+
+      <LanguageBar langs={x.langs} />
+
+      <p className="mt-4 text-xs text-amber-200 group-hover:underline">
+        View on GitHub →
+      </p>
+    </a>
+  ))}
+</div>
+  
             <div className="space-y-16 md:space-y-10">
           </div>
           <SiteFooter />
         </div>
     
         </main>
-    // <main className="mx-auto max-w-6xl px-4 py-16">
-    //   <h1 className="text-3xl font-semibold text-white">More Stuff I Built</h1>
-    //   <p className="mt-2 text-slate-300">
-    //     Smaller experiments, infrastructure demos, and “why did I build this?” projects.
-    //   </p>
-
-    //   <div className="mt-8 grid gap-4 md:grid-cols-2">
-    //     {items.map((x) => (
-    //       <div
-    //         key={x.title}
-    //         className="rounded-2xl border border-white/10 bg-slate-900/50 p-5 backdrop-blur-md"
-    //       >
-    //         <h2 className="text-white font-semibold">{x.title}</h2>
-    //         <p className="mt-2 text-sm text-slate-300">{x.note}</p>
-    //         <p className="mt-4 text-xs text-amber-200">Click to see details →</p>
-    //       </div>
-    //     ))}
-    // //   </div>
-    // </main>
   );
 }
+

@@ -8,7 +8,9 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism"
+
 import { projects } from "./data/projects"
+import LanguageBar, { Lang } from "@/components/LanguageBar"
 
 /* ------------------------- Types ------------------------- */
 
@@ -33,6 +35,9 @@ type Project = {
   screens?: string[]
   codeSamples?: CodeSample[]
   showCodePreview?: boolean
+
+  // ✅ NEW: language breakdown for GitHub-style bar
+  langs?: Lang[]
 }
 
 /* ------------------------- Helpers ------------------------- */
@@ -65,9 +70,7 @@ function ExpandableList({
 
   return (
     <div className="space-y-1">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-amber-300">
-        {title}
-      </h3>
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-amber-300">{title}</h3>
       <ul className="list-disc space-y-1 pl-5 text-sm text-slate-200">
         {visibleItems.map((item, i) => (
           <li key={i}>{item}</li>
@@ -279,6 +282,13 @@ export default function Projects() {
                   ))}
                 </div>
 
+                {/* ✅ Language Bar on each card */}
+                {project.langs?.length ? (
+                  <div className="pt-2">
+                    <LanguageBar langs={project.langs} />
+                  </div>
+                ) : null}
+
                 <p className="mt-1 text-[11px] text-amber-300">Click to open full case study →</p>
               </CardContent>
             </Card>
@@ -415,6 +425,13 @@ export default function Projects() {
                         {activeProject.title}
                       </h2>
                       <p className="text-sm text-slate-300">{activeProject.summary}</p>
+
+                      {/* ✅ Language Bar in modal */}
+                      {activeProject.langs?.length ? (
+                        <div className="pt-3">
+                          <LanguageBar langs={activeProject.langs} />
+                        </div>
+                      ) : null}
                     </div>
 
                     {activeProject.highlights?.length ? (
