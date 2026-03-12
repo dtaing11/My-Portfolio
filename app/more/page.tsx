@@ -13,44 +13,35 @@ type Item = {
 
 const items: Item[] = [
   {
-    title: "Go TCP Sliding Window Simulator",
-    note: "Selective Repeat + loss simulation",
-    link: "https://github.com/yourname/go-tcp-sliding-window",
+    title: "Networking Packet Routing, TCP Packet Drop Handliing",
+    note: "Selective Repeat, GoBackN  + loss simulation",
+    link: "https://github.com/dtaing11/Networking/tree/main/TCP-Packet-Drop-Handling",
     langs: [
-      { name: "Go", pct: 92, className: "bg-cyan-400" },
-      { name: "Shell", pct: 6, className: "bg-emerald-400" },
-      { name: "Other", pct: 2, className: "bg-slate-400" },
+      { name: "Go", pct: 71.1, className: "bg-cyan-400" },
+      { name: "Python", pct: 28.9, className: "bg-yellow-400" },
     ],
   },
   {
     title: "Custom SMTP Server on Cloud Run",
-    note: "Go backend + API key auth",
-    link: "https://github.com/yourname/smtp-cloud-run",
+    note: "Go backend + API key auth (I just do not want to pay the emailing service)",
+    link: "https://github.com/dtaing11/smtp-server",
     langs: [
-      { name: "Go", pct: 88, className: "bg-cyan-400" },
-      { name: "Dockerfile", pct: 10, className: "bg-sky-400" },
-      { name: "Other", pct: 2, className: "bg-slate-400" },
+      { name: "Go", pct: 92.6, className: "bg-cyan-400" },
+      { name: "Dockerfile", pct: 7.4, className: "bg-sky-400" },
+ 
     ],
   },
   {
-    title: "Mini Vim-like Text Editor in Go",
-    note: "No GUI textbox; manual rendering",
-    link: "https://github.com/yourname/go-vim-editor",
+    title: "Mini C Parser",
+    note: "Using JavaCup and Java based AST classes",
+    link: "https://github.com/dtaing11/Compiler-Inspired",
     langs: [
-      { name: "Go", pct: 96, className: "bg-cyan-400" },
-      { name: "Other", pct: 4, className: "bg-slate-400" },
+      { name: "Java", pct: 90.4, className: "bg-orange-400" },
+      { name: "HTML", pct: 9.3, className: "bg-orange-700" },
+      { name: "Other", pct: .3, className: "bg-slate-400" },
     ],
   },
-  {
-    title: "LEGO Mosaic Generator (PyTorch)",
-    note: "Piece estimation + palette mapping",
-    link: "https://github.com/yourname/lego-mosaic",
-    langs: [
-      { name: "Python", pct: 90, className: "bg-yellow-400" },
-      { name: "Jupyter", pct: 8, className: "bg-orange-400" },
-      { name: "Other", pct: 2, className: "bg-slate-400" },
-    ],
-  },
+
 ];
 
 
