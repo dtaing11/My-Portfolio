@@ -169,7 +169,6 @@ export const projects: Project[] = [
   repoUrl: "https://github.com/dtaing11/Eyetracker-AI4SELAB",
   showCodePreview: false,
 
-  // ✅ GitHub-style language breakdown
   langs: [
     { name: "Java", pct: 96.3, className: "bg-orange-500" },
     { name: "Python", pct: 2.9, className: "bg-yellow-400" },
@@ -227,64 +226,60 @@ export const projects: Project[] = [
 
   },
  
-  {
-  id: "strikezone-ml",
-  title: "LSU Softball Strike Zone Prediction Model",
-  year: "2025",
+{
+  id: "birdwatch-ml",
+  title: "BirdWatch: AI-Powered Birdwatching App",
+  year: "2026",
   summary:
-    "A machine learning project that models umpire strike-zone decisions for LSU Softball using real pitch-tracking data. The system predicts the probability of a called strike based on pitch location, batter/pitcher handedness, and swing behavior. Built using neural-network transfer learning, model surgery, and custom visualization tools to generate detailed strike-zone heatmaps.",
+    "A hackathon project that turns birdwatching into a gamified mobile experience. BirdWatch lets users capture or upload bird photos, identify the species using an in-house trained ResNet18 model, and earn points based on how rare the species is in their area. As backend lead, I designed a Spring Boot microservice-style backend deployed on Google Cloud Run, integrated Cloud SQL and Cloud Storage, and built asynchronous communication with a separate ML prediction service.",
   tech: [
+    "Spring Boot",
+    "Java",
+    "React Native",
     "PyTorch",
-    "Neural Networks",
-    "Python",
-    "NumPy",
-    "Matplotlib",
-    "ML Engineering"
+    "ResNet18",
+    "Google Cloud Run",
+    "Google Cloud SQL",
+    "Google Cloud Storage",
+    "REST APIs",
+    "Async Processing",
+    "Docker"
   ],
   details: [
-    "Developed a custom MLP architecture that predicts called-strike probability using vertical location, horizontal location, swing status, and handedness inputs.",
-    "Implemented weight-surgery transfer learning to expand a small initial model into a more complex 5-feature architecture without losing previously-learned MLB behavior.",
-    "Trained and fine-tuned the upgraded model on LSU Softball data to capture umpire-specific strike-zone tendencies.",
-    "Created heatmap generators that visualize strike probabilities under all combinations of batter/pitcher handedness and swing behavior.",
-    "Added support for overlaying official softball rulebook strike-zone boundaries for comparison against real umpire behavior.",
+    "Led backend development and designed a REST API architecture using Spring Boot with a microservice-inspired approach during a hackathon.",
+    "Built the main backend service on Google Cloud Run to handle user requests, photo uploads, metadata storage, and score calculation.",
+    "Integrated Google Cloud Storage for storing uploaded bird images and Google Cloud SQL for persisting user, post, and prediction metadata.",
+    "Designed asynchronous task flow between the main Spring Boot service and a separate Cloud Run-hosted ML prediction service to process bird classification requests without blocking the client.",
+    "Worked with an in-house trained ResNet18 model in PyTorch to identify bird species from uploaded images and return prediction results back into the main application pipeline.",
+    "Implemented logic to rank bird rarity relative to the user’s area and convert predictions into a game-like scoring system that encourages exploration and collection.",
+    "Containerized services with Docker, which made it possible to deploy a cloud-based multi-service system quickly and reliably within hackathon constraints."
   ],
   highlights: [
-    "Neural Network Weight Surgery",
-    "Strike-Zone Heatmaps",
-    "Feature Expansion (x, y, swing, pitcher hand, batter hand)",
-    "LSU Softball Fine-Tuning",
-    "Umpire Behavior Modeling"
+    "Backend Lead",
+    "Spring Boot REST API Design",
+    "Cloud Run Microservice Architecture",
+    "Async ML Prediction Pipeline",
+    "Google Cloud Storage + Cloud SQL",
+    "Gamified Bird Species Scoring"
   ],
   userExperience: [
-    "Analysts can visualize 2D probability maps showing how likely an umpire is to call a strike at any location.",
-    "Heatmaps automatically adapt to context: batter handedness, pitcher handedness, and whether the batter swings.",
-    "The model reveals expansions/shrinkages in the zone compared to the rulebook, assisting scouting and decision-making.",
-    "Coaches and researchers can compare different scenarios (LHP vs RHB, swing vs take) through clear visual outputs.",
-    "Umpire tendencies are modeled probabilistically rather than through fixed rules, capturing real-world decision patterns."
+    "Users can capture or upload bird photos directly from the mobile app and receive species predictions automatically.",
+    "Each identified bird contributes to a personal collection, making birdwatching feel like a game-like discovery experience.",
+    "The app scores sightings based on species rarity in the user’s area, rewarding users for finding uncommon birds.",
+    "Prediction and scoring happen through a smooth backend pipeline, so users get a simple experience while complex cloud processing happens behind the scenes.",
+    "By combining bird identification, rarity ranking, and collection tracking, the app creates a more engaging experience for both casual users and birdwatching enthusiasts."
   ],
-  image: "/projects/strikezone-cover.png",
-  screens: ["/projects/softball/1.png","/projects/softball/2.png","/projects/softball/3.png","/projects/softball/4.png"],
-  repoUrl: "https://github.com/dtaing11/Math4020-Softball-Trackman-StrikeZone",
-  showCodePreview: true,
-    codeSamples: [
-      {
-        label: "model_surgery.py",
-        url: "https://raw.githubusercontent.com/dtaing11/Math4020-Softball-Trackman-StrikeZone/refs/heads/main/Strickzone_Predictve_Model/utils/model_weight_surgery.py",
-        repoUrl:
-          "https://github.com/dtaing11/Math4020-Softball-Trackman-StrikeZone/blob/main/Strickzone_Predictve_Model/utils/model_weight_surgery.py",
-        challenge:
-  "Expanding a trained 3-input model into a 5-input architecture without losing learned behavior. Required carefully rewriting the first-layer weight matrix, aligning state_dict keys across different model wrappers, and ensuring the upgraded network stayed numerically stable during fine-tuning on the new dataset.",
-    },
-    ],
+  repoUrl: "https://github.com/dtaing11/Hackathon-Wics-2026",
+  showCodePreview: false,
   langs: [
-  { name: "Python", pct: 98.4, className: "bg-yellow-400" },
-  { name: "C", pct: 1.0, className: "bg-blue-600" },
-  { name: "Cython", pct: 0.3, className: "bg-green-500" },
-  { name: "C++", pct: 0.2, className: "bg-blue-500" },
-  { name: "Fortran", pct: 0.1, className: "bg-purple-500" },
-  { name: "PowerShell", pct: 0.0, className: "bg-indigo-400" },
+  { name: "TypeScript", pct: 46.0, className: "bg-blue-500" },
+  { name: "Java", pct: 25.6, className: "bg-orange-600" },
+  { name: "HTML", pct: 17.4, className: "bg-red-500" },
+  { name: "Python", pct: 6.9, className: "bg-yellow-400" },
+  { name: "Ruby", pct: 1.1, className: "bg-pink-500" },
+  { name: "Kotlin", pct: 0.8, className: "bg-purple-500" },
+  { name: "Other", pct: 2.2, className: "bg-gray-400" },
 ],
-
 },
 {
   id: "texas-infrastructure",

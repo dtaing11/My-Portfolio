@@ -7,8 +7,8 @@ const stackItems = [
 "WICS 2023 Hackathon Best in Technical",
 "SASE 2024 Hackathon Winner",
 "Evening of Engineering Excellence Nominee",
-"Best Capstone Project"
-
+"Best Capstone Project",
+"WICS 2026 Hackathon Winner",
 ];
 
 export default function Accomplishment() {
