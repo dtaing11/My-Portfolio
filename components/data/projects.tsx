@@ -269,6 +269,12 @@ export const projects: Project[] = [
     "Prediction and scoring happen through a smooth backend pipeline, so users get a simple experience while complex cloud processing happens behind the scenes.",
     "By combining bird identification, rarity ranking, and collection tracking, the app creates a more engaging experience for both casual users and birdwatching enthusiasts."
   ],
+  image: "/projects/flockfinder/1.JPG",
+    screens: [
+      "/projects/flockfinder/1.JPG",
+      "/projects/flockfinder/2.png",
+      "/projects/flockfinder/3.png",
+    ],
   repoUrl: "https://github.com/dtaing11/Hackathon-Wics-2026",
   showCodePreview: false,
   langs: [
