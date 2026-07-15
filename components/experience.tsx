@@ -7,7 +7,18 @@ const INITIAL_COUNT = 3;
 
 const EXPERIENCE_ITEMS = [
   {
-    
+    title: "Software Engineer - FarmMind, Baton Rouge",
+    bullets: [
+      "Optimized the Flutter mobile app by improving memory management, eliminating unnecessary widget rebuilds, and tuning the network layer for faster load times and lower data usage.",
+      "Designed and built an agentic AI orchestrator that coordinates tool calling, RAG pipelines, and specialized sub-agents using LangChain, LangSmith, and DSPy.",
+      "Built an evaluation system to quantify and track model output quality across prompt and pipeline changes.",
+      "Set up robust, scalable infrastructure on Google Cloud, using Compute Engine for backend workloads, Firebase and Firestore for app data, and BigQuery for analytics.",
+    ],
+    className:
+      "border border-emerald-400/40 bg-emerald-900/25 backdrop-blur-md shadow-lg shadow-emerald-900/40",
+  },
+  {
+
     title: "AI/LLM Developer Intern - Our Lady of the Lake",
     bullets: [
       "Reduced staff search time by 70% by integrating hospital tools and resources into a unified MCP-driven platform.",
